@@ -48,13 +48,19 @@ local function create_hud(player, pos)
 	local pmeta = player:get_meta()
 	local data = minetest.deserialize(pmeta:get_string("measuring_tape"))
 
-	hud:add(player, "measuring_tape:current_distance", {
-		hud_elem_type = "waypoint",
-		name = "Distance: ",
-		text = "m",
-		world_pos = data.pos1,
-		color = 0x000000
-	})
+	if not hud:get(player, "measuring_tape:current_distance") then 
+		hud:add(player, "measuring_tape:current_distance",{
+			hud_elem_type = "waypoint",
+			name = "Distance: ",
+			text = "m",
+			world_pos = data.pos1,
+			color = 0x000000
+		})
+	else
+		hud:change(player, "measuring_tape:current_distance",{
+			world_pos = data.pos1,
+		})
+	end
 end
 
 -- Marks pos1 and starts auto-reset counter
